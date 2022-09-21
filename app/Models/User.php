@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\UserProfile;
+
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
+    protected $table="users";
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+
+    protected $fillable = [
+        'username',
+        'password',
+        'email',
+        'name',
+        'last_name',
+        'second_lastname',
+        'is_active'
+    ];
+
+    protected $appends = ['full_name'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function getFullNameAttribute()
+    {
+        return $this->name . ' ' . $this->last_name . ' ' . $this->second_last_name;
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when(! empty ($search), function ($query) use ($search) {
+
+            return $query->where(function($q) use ($search)
+            {
+                if (isset($search) && !empty($search)) {
+                    $q->where('username', 'like', '%' . $search . '%');
+                    $q->orWhere('name', 'like', '%' . $search . '%');
+                    $q->orWhere('last_name', 'like', '%' . $search . '%');
+                    $q->orWhere('second_lastname', 'like', '%' . $search . '%');
+                    $q->orWhere('email', 'like', '%' . $search . '%');
+                }
+            });
+        });
+    }
+}
