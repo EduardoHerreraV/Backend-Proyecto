@@ -53,13 +53,13 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $project = new Project();
-            $project->fill($request->all());
-            $project->save();
+            $user = new User();
+            $user->fill($request->all());
+            $user->save();
             DB::commit();
             return response()->json([
                 'success' => true,
-                'project' => $project
+                'user' => $user
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
@@ -74,10 +74,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Project $project
+     * @param \App\Models\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Request $request)
     {
         //
     }
@@ -85,55 +85,41 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Project $project
+     * @param \App\Models\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($projectId)
+    public function edit($id)
     {
         try {
-            // $employee=Employee::first();
-
-            $project = Project::where('psp_id', $projectId)
-            ->join('employees', 'projects.psp_id', '=', 'employees.id')
-            ->select('projects.id as id',
-            'projects.name as name',
-            'projects.contract_number as contract_number',
-            'projects.contract_start_date as contract_start_date',
-            'projects.contract_end_date as contract_end_date',
-            'employees.name as psp_name',
-            'employees.last_name as psp_last_name',
-            'employees.second_last_name as psp_second_last_name',
-            DB::raw("concat(employees.name, ' ', employees.last_name, ' ', employees.second_last_name) as psp_name")
-            )
-            ->first();
+            $user = User::find($id);
             return response()->json([
-                'success' => true,
-                'project' => $project,
-                // 'employee' => $employee->full_name,
-            ], 200);
-        } catch (\Exception $e) {
+              'success' => true,
+              'user' => $user,
+            ]);
+          } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
+              'success' => false,
+              'message' => $e->getMessage()
             ]);
-        }
+          }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Project $project
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
-            $project = Project::find($id);
-            $project->fill($request->all());
-            $project->save();
+            $user = User::find($id);
+            $user->fill($request->all());
+            $user->save();
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -150,14 +136,14 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Project $project
+     * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
             DB::beginTransaction();
-            $data = Project::where('id', $id)->delete();
+            $user = User::where('id', $id)->delete();
             DB::commit();
             return response()->json([
                 'sucess' => true,
