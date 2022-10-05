@@ -20,12 +20,13 @@ class User extends Authenticatable
      */
 
     protected $fillable = [
+        'name',
+        'id_number',
+        'group',
+        'carrer',
         'username',
         'password',
         'email',
-        'name',
-        'last_name',
-        'second_lastname',
         'is_active'
     ];
 
@@ -62,11 +63,10 @@ class User extends Authenticatable
             return $query->where(function($q) use ($search)
             {
                 if (isset($search) && !empty($search)) {
-                    $q->where('username', 'like', '%' . $search . '%');
                     $q->orWhere('name', 'like', '%' . $search . '%');
-                    $q->orWhere('last_name', 'like', '%' . $search . '%');
-                    $q->orWhere('second_lastname', 'like', '%' . $search . '%');
-                    $q->orWhere('email', 'like', '%' . $search . '%');
+                    $q->orWhere('id_number', 'like', '%' . $search . '%');
+                    $q->orWhere('carrer', 'like', '%' . $search . '%');
+                    $q->orWhere('group', 'like', '%' . $search . '%');
                 }
             });
         });
