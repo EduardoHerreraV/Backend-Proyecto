@@ -44,6 +44,9 @@ class CatalogsController extends Controller
             if($request->has('cat_statuses') && $request->input('cat_statuses') == true) {
                 $catalogs['cat_statuses'] = CatStatus::select(['id', 'name'])->get();
             }
+            if($request->has('degree') && $request->input('degree') == true) {
+                $catalogs['degree'] = Degree::select(['id', 'name'])->get();
+            }
 
             return response()->json([
                 'status' => 200,
