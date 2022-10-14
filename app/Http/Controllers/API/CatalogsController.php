@@ -11,6 +11,7 @@ use App\Models\CatSize;
 use App\Models\CatStatus;
 use App\Models\CatSpecificKnowledge;
 use App\Models\CatKnowledgeAreaType;
+use App\Models\Degree;
 
 class CatalogsController extends Controller
 {
@@ -43,6 +44,9 @@ class CatalogsController extends Controller
             }
             if($request->has('cat_statuses') && $request->input('cat_statuses') == true) {
                 $catalogs['cat_statuses'] = CatStatus::select(['id', 'name'])->get();
+            }
+            if($request->has('degrees') && $request->input('degrees') == true) {
+                $catalogs['degrees'] = Degree::select(['id', 'name'])->get();
             }
 
             return response()->json([
