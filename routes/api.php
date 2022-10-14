@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\Catalogs\DegreeController;
 use App\Http\Controllers\ConexionApiController;
 use App\Http\Controllers\API\CatalogsController;
+use App\Http\Controllers\Admin\Catalogs\GroupsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('admin/catalogs', [CatalogsController::class, 'index']);
 
 
-    Route::resource('user',UserController::class);
-    Route::resource('degree', DegreeController::class);
+
 
 });
+    Route::resource('user',UserController::class);
+    Route::resource('degree', DegreeController::class);
+    Route::resource('groups', GroupsController::class);
 });

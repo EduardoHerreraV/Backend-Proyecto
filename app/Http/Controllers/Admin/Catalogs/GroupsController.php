@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers\Admin\Catalogs;
+
 
 use App\Models\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class GroupsController extends Controller
 {
@@ -21,7 +23,7 @@ class GroupsController extends Controller
             $groups = Groups::search($search)->orderBy('created_at','desc')->paginate($rowsPerPage);
             return response()->json([
                       'success' => true,
-                      'user' => $groups,
+                      'groups' => $groups,
                   ]);
             }catch (\Exception $e) {
               error_log($e->getMessage());
@@ -92,7 +94,7 @@ class GroupsController extends Controller
             $groups = Groups::find($id);
             return response()->json([
               'success' => true,
-              'user' => $groups,
+              'groups' => $groups,
             ]);
           } catch (\Exception $e) {
             DB::rollback();
@@ -110,18 +112,7 @@ class GroupsController extends Controller
      * @param  \App\Models\Groups  $groups
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Groups $groups)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Groups  $groups
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
@@ -137,6 +128,30 @@ class GroupsController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e
+            ]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Groups  $groups
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+            $groups = Groups::where('id', $id)->delete();
+            DB::commit();
+            return response()->json([
+                'sucess' => true,
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'message' => $e->getMessage(),
+                'success' => false,
             ]);
         }
     }
