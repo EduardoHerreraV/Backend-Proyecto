@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Degree;
 use App\Models\Groups;
+use App\Models\Matter;
 
 class CatalogsController extends Controller
 {
@@ -19,6 +20,9 @@ class CatalogsController extends Controller
             }
             if($request->has('groups') && $request->input('groups') == true) {
                 $catalogs['groups'] = Groups::select(['id', 'name'])->get();
+            }
+            if($request->has('matters') && $request->input('matters') == true) {
+                $catalogs['matters'] = Matter::select(['id', 'name'])->get();
             }
 
             return response()->json([

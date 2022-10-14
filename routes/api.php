@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Catalogs\DegreeController;
 use App\Http\Controllers\ConexionApiController;
 use App\Http\Controllers\API\CatalogsController;
 use App\Http\Controllers\Admin\Catalogs\GroupsController;
+use App\Http\Controllers\Admin\Catalogs\MatterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,5 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('user',UserController::class);
     Route::resource('degree', DegreeController::class);
     Route::resource('groups', GroupsController::class);
+    Route::resource('matter', MatterController::class);
 });
