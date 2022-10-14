@@ -10,9 +10,10 @@ use App\Http\Controllers\API\CatalogsController;
 class Degree extends Model
 {
     use HasFactory;
+    protected $table="degrees";
 
     protected $fillable = [
-        'name',
+        'name'
     ];
 
     public function scopeSearch($query, $search)
@@ -22,7 +23,7 @@ class Degree extends Model
             return $query->where(function($q) use ($search)
             {
                 if (isset($search) && !empty($search)) {
-                    $q->orWhere('name', 'ilike', '%' . $search . '%');
+                    $q->orWhere('name', 'like', '%' . $search . '%');
                 }
             });
         });

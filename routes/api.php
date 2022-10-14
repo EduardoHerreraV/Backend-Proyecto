@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\Catalogs\DegreeController;
 use App\Http\Controllers\ConexionApiController;
 use App\Http\Controllers\API\CatalogsController;
 
@@ -29,6 +30,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 
     Route::resource('user',UserController::class);
+    Route::resource('degree', DegreeController::class);
 
 });
 });
