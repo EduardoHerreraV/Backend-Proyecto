@@ -5,17 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Profiles extends Model
+class UserProfiles extends Model
 {
     use HasFactory;
+    protected $table="user_profiles";
+    public static $unique_table = 'user_profiles';
+    public static $unique_column = 'key';
 
     protected $fillable = [
         'name',
-        'key'
-    ];
+        'key',
+      ];
 
-    public function profiles(){
-        return $this->belongsToMany('App\Models\UserProfiles','role_has_permissions','permission_id','profile_id');
+    public function modules()
+    {
+    return $this->hasMany('App\Models\Modules');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany('App\Models\Profiles','role_has_permissions','profile_id','permission_id');
     }
 
     public function scopeSearch($query, $search)
@@ -26,7 +35,8 @@ class Profiles extends Model
             {
                 if (isset($search) && !empty($search)) {
                     $q->orWhere('name', 'like', '%' . $search . '%');
-                    $q->orWhere('key', 'like', '%' . $search . '%');
+                    $q->where('key', 'like', '%' . $search . '%');
+
                 }
             });
         });

@@ -15,9 +15,13 @@ class CreateProfilesTable extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('key');
+            $table->string('name', 255);
+            $table->string('key', 255);
+            $table->text('description')->nullable();
+            $table->integer('modules_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('modules_id')->references('id')->on('modules');
         });
     }
 

@@ -6,23 +6,30 @@ use App\Models\Modules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\GeneralResponse;
 
 class ModulesController extends Controller
 {
+    use GeneralResponse;
+
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request [page, rowsPerPage, search]
+     * @return \Illuminate\Http\JsonResponse [code, obj, message, action]
      */
+
     public function index(Request $request)
     {
         try {
             $rowsPerPage = $request->input('rowsPerPage');
             $search = $request->input('search');
-            $modules = Modules::search($search)->orderBy('created_at','desc')->paginate($rowsPerPage);
+            $module = Modules::with('permissions')->orderBy('created_at','desc')->get();
+            $items = Modules::with('permissions')->orderBy('created_at','desc')->get();
+            $this->genResponse(200, $items, null, 'show-modules-list');
+            //return  $module;
             return response()->json([
                       'success' => true,
-                      'modules' => $modules,
+                      'modules' => $module,
                   ]);
             }catch (\Exception $e) {
               error_log($e->getMessage());
@@ -51,23 +58,7 @@ class ModulesController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $modules = new Modules();
-            $modules->fill($request->all());
-            $modules->save();
-            DB::commit();
-            return response()->json([
-                'success' => true,
-                'modules' => $modules
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'success' => false,
-                'message' => $e
-            ]);
-        }
+        //
     }
 
     /**
@@ -89,19 +80,7 @@ class ModulesController extends Controller
      */
     public function edit($id)
     {
-        try {
-            $modules = Modules::find($id);
-            return response()->json([
-              'success' => true,
-              'modules' => $modules,
-            ]);
-          } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-              'success' => false,
-              'message' => $e->getMessage()
-            ]);
-          }
+        //
     }
 
     /**
@@ -113,22 +92,7 @@ class ModulesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            DB::beginTransaction();
-            $modules = Modules::find($id);
-            $modules->fill($request->all());
-            $modules->save();
-            DB::commit();
-            return response()->json([
-                'success' => true,
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'success' => false,
-                'message' => $e
-            ]);
-        }
+        //
     }
 
     /**
@@ -139,19 +103,6 @@ class ModulesController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $modules = Modules::where('id', $id)->delete();
-            DB::commit();
-            return response()->json([
-                'sucess' => true,
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'message' => $e->getMessage(),
-                'success' => false,
-            ]);
-        }
+        //
     }
 }

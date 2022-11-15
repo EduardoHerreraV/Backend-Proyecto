@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class ProfilesController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request [page, rowsPerPage, search]
+     * @return \Illuminate\Http\JsonResponse [code, obj, message, action]
      */
     public function index(Request $request)
     {

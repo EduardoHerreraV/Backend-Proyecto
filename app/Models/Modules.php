@@ -9,10 +9,21 @@ class Modules extends Model
 {
     use HasFactory;
 
+    protected $table="modules";
+
     protected $fillable = [
         'name',
         'key'
     ];
+
+        /**
+     * Get the permissions of the module.
+     */
+
+    public function permissions()
+    {
+        return $this->hasMany('App\Models\Profiles');
+    }
 
     public function scopeSearch($query, $search)
     {
