@@ -3,7 +3,7 @@
 namespace App\Traits;
 use App\Traits\GeneralResponse;
 use App\Traits\RequiresPermissions;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 trait ProfileVerify {
 
@@ -12,7 +12,7 @@ trait ProfileVerify {
     public function can($perms = null)
     {
 
-        $roles = ['super_admin', 'administrator', 'finance', 'rr_hh'];
+        $roles = ['super_admin', 'alumno', 'profesor'];
         $user = Auth::user();
         $user_role = $user->profile->key;
 

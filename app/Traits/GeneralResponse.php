@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-
-use Auth;
-
 trait GeneralResponse{
 
     /**

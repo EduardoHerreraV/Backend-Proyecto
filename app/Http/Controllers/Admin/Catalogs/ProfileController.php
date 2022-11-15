@@ -22,9 +22,6 @@ class ProfileController extends Controller
    */
   public function index(Request $request)
   {
-
-    //if($error = $this->can(['roles-view'])){return $error;} //validation
-
     try {
       $rowsPerPage = $request->rowsPerPage;
       $search = $request->search;

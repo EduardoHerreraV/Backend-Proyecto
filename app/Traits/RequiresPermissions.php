@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Traits;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 trait RequiresPermissions{
 

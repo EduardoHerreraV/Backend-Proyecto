@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Catalogs;
 
-use App\Models\Profiles;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class ProfilesController extends Controller
+class PermissionController extends Controller
 {
      /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class ProfilesController extends Controller
         try {
             $rowsPerPage = $request->rowsPerPage;
             $search = $request->search;
-            $items = Profiles::select('name', 'key')->search($search)->orderBy('created_at','desc')->paginate($rowsPerPage);
+            $items = Permission::select('name', 'key')->search($search)->orderBy('created_at','desc')->paginate($rowsPerPage);
 
             return $this->genResponse(200, $items, null, 'show-permissions-list');
         }
@@ -50,7 +50,7 @@ class ProfilesController extends Controller
     {
         try {
             DB::beginTransaction();
-                $permission = new Profiles();
+                $permission = new Permission();
                 $permission->fill($request->all());
                 $permission->save();
             DB::commit();
@@ -68,7 +68,7 @@ class ProfilesController extends Controller
      * @param  \App\Models\profiles  $profiles
      * @return \Illuminate\Http\Response
      */
-    public function show(profiles $profiles)
+    public function show(Permission $profiles)
     {
         //
     }
@@ -95,7 +95,7 @@ class ProfilesController extends Controller
     {
         try {
             DB::beginTransaction();
-                $permission = Profiles::find($id);
+                $permission = Permission::find($id);
                 $permission->fill($request->all());
                 $permission->save();
 
