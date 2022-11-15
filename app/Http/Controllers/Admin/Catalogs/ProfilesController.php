@@ -16,21 +16,18 @@ class ProfilesController extends Controller
      */
     public function index(Request $request)
     {
+        //if($error = $this->can(['permissions-view'])){return $error;} //validation
+
         try {
-            $rowsPerPage = $request->input('rowsPerPage');
-            $search = $request->input('search');
-            $profiles = Profiles::search($search)->orderBy('created_at','desc')->paginate($rowsPerPage);
-            return response()->json([
-                      'success' => true,
-                      'profiles' => $profiles,
-                  ]);
-            }catch (\Exception $e) {
-              error_log($e->getMessage());
-              return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-              ]);
-                }
+            $rowsPerPage = $request->rowsPerPage;
+            $search = $request->search;
+            $items = Profiles::select('name', 'key')->search($search)->orderBy('created_at','desc')->paginate($rowsPerPage);
+
+            return $this->genResponse(200, $items, null, 'show-permissions-list');
+        }
+        catch (Exception $e) {
+            return $this->genResponse(400, null, $e->getMessage());
+        }
     }
 
     /**
@@ -53,20 +50,15 @@ class ProfilesController extends Controller
     {
         try {
             DB::beginTransaction();
-            $profiles = new Profiles();
-            $profiles->fill($request->all());
-            $profiles->save();
+                $permission = new Profiles();
+                $permission->fill($request->all());
+                $permission->save();
             DB::commit();
-            return response()->json([
-                'success' => true,
-                'profiles' => $profiles
-            ], 200);
+            return $this->genResponse(200, null, 'Permiso creado');
+
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json([
-                'success' => false,
-                'message' => $e
-            ]);
+            return $this->genResponse(500, null, $e->getMessage());
         }
     }
 
@@ -89,19 +81,7 @@ class ProfilesController extends Controller
      */
     public function edit($id)
     {
-        try {
-            $profiles = Profiles::find($id);
-            return response()->json([
-              'success' => true,
-              'profiles' => $profiles,
-            ]);
-          } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-              'success' => false,
-              'message' => $e->getMessage()
-            ]);
-          }
+        //
     }
 
     /**
@@ -115,19 +95,16 @@ class ProfilesController extends Controller
     {
         try {
             DB::beginTransaction();
-            $profiles = Profiles::find($id);
-            $profiles->fill($request->all());
-            $profiles->save();
+                $permission = Profiles::find($id);
+                $permission->fill($request->all());
+                $permission->save();
+
             DB::commit();
-            return response()->json([
-                'success' => true,
-            ], 200);
+            return $this->genResponse(200, null, 'Permiso actualizado');
+
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json([
-                'success' => false,
-                'message' => $e
-            ]);
+            return $this->genResponse(500, null, $e->getMessage());
         }
     }
 
@@ -139,19 +116,6 @@ class ProfilesController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $profiles = Profiles::where('id', $id)->delete();
-            DB::commit();
-            return response()->json([
-                'sucess' => true,
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'message' => $e->getMessage(),
-                'success' => false,
-            ]);
-        }
+        # code...
     }
 }

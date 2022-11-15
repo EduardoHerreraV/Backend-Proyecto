@@ -8,7 +8,7 @@ use App\Http\Controllers\ConexionApiController;
 use App\Http\Controllers\API\CatalogsController;
 use App\Http\Controllers\Admin\Catalogs\GroupsController;
 use App\Http\Controllers\Admin\Catalogs\MatterController;
-use App\Http\Controllers\Admin\Catalogs\ProfilesController;
+use App\Http\Controllers\Admin\Catalogs\ProfileController;
 use App\Http\Controllers\Admin\Catalogs\ModulesController;
 
 /*
@@ -40,6 +40,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('degree', DegreeController::class);
     Route::resource('groups', GroupsController::class);
     Route::resource('matter', MatterController::class);
-    Route::resource('profiles', ProfilesController::class);
+    Route::resource('profiles', ProfileController::class);
     Route::resource('modules', ModulesController::class);
 });
