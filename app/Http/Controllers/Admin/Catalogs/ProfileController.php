@@ -40,11 +40,6 @@ class ProfileController extends Controller
    */
   public function store(Request $request)
   {
-
-    if ($error = $this->can(['roles-create'])) {
-      return $this->genResponse(401, $error);
-    } //validate permissions
-
     try {
       DB::beginTransaction();
       $user_profile = new UserProfile();
@@ -84,10 +79,6 @@ class ProfileController extends Controller
    */
   public function update(Request $request, $id)
   {
-    if ($error = $this->can(['roles-edit'])) {
-      return $this->genResponse(401, $error);
-    } //validate permissions
-
     try {
 
       DB::beginTransaction();
