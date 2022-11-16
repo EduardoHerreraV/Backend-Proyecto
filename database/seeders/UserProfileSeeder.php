@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\UserProfiles;
+use App\Models\UserProfile;
 
-class UserProfilesSeeder extends Seeder
+class UserProfileSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,17 +14,17 @@ class UserProfilesSeeder extends Seeder
      */
     public function run()
     {
-        UserProfiles::create([
+        UserProfile::create([
             'id'     => 1,
             'key'    => 'super_admin',
             'name'   => 'Super Admin',
         ]);
-        UserProfiles::create([
+        UserProfile::create([
             'id'     => 2,
             'key'    => 'alumno',
             'name'   => 'Alumno',
         ]);
-        UserProfiles::create([
+        UserProfile::create([
             'id'     => 3,
             'key'    => 'profesor',
             'name'   => 'Profesor',
