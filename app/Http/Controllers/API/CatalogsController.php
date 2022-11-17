@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Degree;
 use App\Models\Groups;
 use App\Models\Matter;
-use App\Models\Profiles;
+use App\Models\UserProfile;
 
 class CatalogsController extends Controller
 {
@@ -26,7 +26,7 @@ class CatalogsController extends Controller
                 $catalogs['matters'] = Matter::select(['id', 'name'])->get();
             }
             if($request->has('profiles') && $request->input('profiles') == true) {
-                $catalogs['profiles'] = Profiles::select(['id', 'name'])->get();
+                $catalogs['profiles'] = UserProfile::select(['id', 'name'])->get();
             }
 
             return response()->json([
