@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
@@ -37,7 +37,7 @@ class AuthController extends Controller
                         ], 200 );
                     }
                 }
-                
+
                 auth()->loginUsingId( User::where( 'username',  $credentials['username'] )->first()->id );
                 $user = auth()->user();
                 $token = $user->createToken( 'grp_session' )->accessToken;
@@ -146,8 +146,10 @@ class AuthController extends Controller
     {
         $user = User::find( $id );
         $user->encryptedId = Crypt::encryptString($user->id);
+        $permissions = $user->getPermissions();
         unset($user->id);
         return (object)[
+            'permissions' => $permissions,
             'encryptedId' => $user->encryptedId,
             'username'    => $user->username,
             'email'       => $user->email,

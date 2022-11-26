@@ -23,7 +23,7 @@ class User extends Authenticatable
         'username',
         'password',
         'email',
-        'profile',
+        'profile_id',
         'is_active'
     ];
 
@@ -52,6 +52,19 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->name . ' ' . $this->last_name . ' ' . $this->second_last_name;
+    }
+
+    public function getPermissions(){
+        $auth_role = UserProfile::where('id',$this->profile_id)->with('permissions')->first();
+        $perms = [];
+        foreach($auth_role->permissions as $perm){
+            array_push($perms,$perm->key);
+        }
+        return $perms;
+    }
+
+    public function profile(){
+        return $this->hasOne('App\Models\UserProfile','id','profile_id');
     }
 
     public function scopeSearch($query, $search)
