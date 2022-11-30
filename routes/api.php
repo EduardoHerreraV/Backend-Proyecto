@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Catalogs\GroupsController;
 use App\Http\Controllers\Admin\Catalogs\MatterController;
 use App\Http\Controllers\Admin\Catalogs\ProfileController;
 use App\Http\Controllers\Admin\Catalogs\ModulesController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,5 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('matter', MatterController::class);
     Route::resource('profiles', ProfileController::class);
     Route::resource('modules', ModulesController::class);
+    Route::resource('student', StudentController::class);
 });
